@@ -8,11 +8,12 @@ import os
 import sys
 
 __author__ = 'Peter Maar'
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 
 thingsToSayOld = []
 smartSayDict = {}
 
+debugTestMode = False  # Inital value on import or when running as main. This can be changed after import in another class/file
 
 def stripText(st):
     st += ' ' # Trailing space helps parse abbr.s
@@ -107,7 +108,10 @@ def processInput(inputToProcess):
     except FileNotFoundError:
         continueRun = ""
         while continueRun.lower() != "y":
-            continueRun = 'y'#input("Looks like this program hasn't been run before. This program will generate a few files where it is located, so it is reccomended it is in a folder by itself, and executed from that directory.\nIs the program set up correctly? (y/n): ")
+            if debugTestMode:
+                continueRun = 'y'
+            else:
+                continueRun = input("Looks like this program hasn't been run before. This program will generate a few files where it is located, so it is reccomended it is in a folder by itself, and executed from that directory.\nIs the program set up correctly? (y/n): ")
             if continueRun.lower() == "n":
                 input("The program will now exit. Please move the file to a folder on its own, and execute in that directory.\nPress any key to exit...")
                 exit()
@@ -179,20 +183,36 @@ def currentTime():
 def savemem():
     global thingsToSayOld
     global smartSayDict
-    f1 = open(sys.path[0] + '/thingsToSayOld.pickle', 'wb')
+    
+    if debugTestMode:
+        f1 = open(sys.path[0] + '/DEBUG-thingsToSayOld.pickle', 'wb')
+    else:
+        f1 = open(sys.path[0] + '/thingsToSayOld.pickle', 'wb')
     pickle.dump(thingsToSayOld, f1, pickle.HIGHEST_PROTOCOL) #Higher protocols may reduce compatibility, but are faster and create smaller files
     f1.close()
-    f2 = open(sys.path[0] + '/smartSayDict.pickle', 'wb')
+
+    if debugTestMode:
+        f2 = open(sys.path[0] + '/DEBUG-smartSayDict.pickle', 'wb')
+    else:
+        f2 = open(sys.path[0] + '/smartSayDict.pickle', 'wb')
     pickle.dump(smartSayDict, f2, pickle.HIGHEST_PROTOCOL) #Higher protocols may reduce compatibility, but are faster and create smaller files
     f2.close()
 
 def loadmem():
     global thingsToSayOld
     global smartSayDict
-    f1 = open(sys.path[0] + '/thingsToSayOld.pickle', 'rb')
+    
+    if debugTestMode:
+        f1 = open(sys.path[0] + '/DEBUG-thingsToSayOld.pickle', 'rb')
+    else:
+        f1 = open(sys.path[0] + '/thingsToSayOld.pickle', 'rb')
     thingsToSayOld = pickle.load(f1)
     f1.close()
-    f2 = open(sys.path[0] + '/smartSayDict.pickle', 'rb')
+
+    if debugTestMode:
+        f2 = open(sys.path[0] + '/DEBUG-smartSayDict.pickle', 'rb')
+    else:
+        f2 = open(sys.path[0] + '/smartSayDict.pickle', 'rb')
     smartSayDict = pickle.load(f2)
     f2.close()
 
@@ -206,7 +226,9 @@ def setDefaultMem():
 def isProfane(checkText):
     checkText = checkText.lower()
     # This list was created using various sites with statistics. Some are more profane than others, or can be mistakenly found inside other words, but it doesn't affect the reply, it just silently prevents storing it
-    if checkText.find('fuck') != -1:  # If the word is found
+    if checkText.find('**') != -1:  # If the word is found
+        return True  # Return that there is profanity    
+    elif checkText.find('fuck') != -1:  # If the word is found
         return True  # Return that there is profanity
     elif checkText.find('ass') != -1:  # If the word is found
         return True  # Return that there is profanity
