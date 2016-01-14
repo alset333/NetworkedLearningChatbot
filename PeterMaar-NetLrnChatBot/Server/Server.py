@@ -46,7 +46,7 @@ def receive(port):
 
 
 try:
-    srvrPort = int(input("Enter the port number to host the server on:\n"))
+    srvrPort = 5005#int(input("Enter the port number to host the server on:\n"))
 except ValueError:
     print("Error. Bad port number. Invalid port number. Port number must be an integer.")
     exit()
