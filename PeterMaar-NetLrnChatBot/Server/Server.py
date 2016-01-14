@@ -52,7 +52,7 @@ except ValueError:
     exit()
 print("Your Local IP Address is:")
 ipSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-ipSock.connect(("8.8.8.8",80))
+ipSock.connect(("8.8.8.8",80))  #TODO This is the only way to get the IP accurately regardless of network setups, is to connect to something, but this will fail if there is no internet. Maybe add a try except?
 print(ipSock.getsockname()[0])
 ipSock.close()
 
