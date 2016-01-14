@@ -107,7 +107,7 @@ def processInput(inputToProcess):
     except FileNotFoundError:
         continueRun = ""
         while continueRun.lower() != "y":
-            continueRun = input("Looks like this program hasn't been run before. This program will generate a few files where it is located, so it is reccomended it is in a folder by itself, and executed from that directory.\nIs the program set up correctly? (y/n): ")
+            continueRun = 'y'#input("Looks like this program hasn't been run before. This program will generate a few files where it is located, so it is reccomended it is in a folder by itself, and executed from that directory.\nIs the program set up correctly? (y/n): ")
             if continueRun.lower() == "n":
                 input("The program will now exit. Please move the file to a folder on its own, and execute in that directory.\nPress any key to exit...")
                 exit()
