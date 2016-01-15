@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 verify-html.py
+python3 verify-website.py
